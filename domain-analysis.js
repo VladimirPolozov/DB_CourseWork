@@ -7,14 +7,30 @@
 
 // collection: customers
 {
-    _id: CUSTOMER_ID,
+    _id: ObjectID,
     name: String,
     characteristics: String
 }
 
+// collection: products
+{
+    _id: ObjectID,
+    name: String
+}
+
+// collection: suppliers
+{
+    _id: ObjectID,
+    name: String,
+    products: [{
+        product_id: ObjectId,
+        price: Number
+    }]
+}
+
 // collection: outlets
 {
-    _id: ObjectID
+    _id: ObjectID,
     type: String, // for example: "general_store", "store", "kiosk", "stand" and e.t.c
     size: Number,
     rent_payment: Number,
@@ -31,18 +47,22 @@
     sections: [{ // for general stores only
         section_id: ObjectID
     }],
-    products: [{
+    inventory: [{
         product_id: ObjectID,
-        count: Number
+        count: Number,
+        price: Number
     }]
-    requests: [{
-        request_id: ObjectID,
-        date: new Date(),
-        products: [{
-            product_id: ObjectId,
-            supplier_id: ObjectId,
-            count: Number
-        }]
+}
+
+// collection: quiries
+{
+    _id: ObjectID,
+    date: new Date(),
+    outlet_id: ObjectID,
+    items: [{
+        product_id: ObjectId,
+        supplier_id: ObjectId,
+        count: Number
     }]
 }
 
@@ -58,27 +78,14 @@
     }]
 }
 
-// collection: products
+// collection: orders
 {
-    _id: ObjectID,
-    name: String,
-    suppliers: [{
-        supplier_id: ObjectID,
-        price: Number
-    }]
-}
-
-// collection: suppliers
-{
-    _id: ObjectID,
-    name: String,
-    orders: [{
-        order_id: ObjectId,
-        outlet_id: ObjectId,
-        date: new Date(),
-        products: [{
-            product_id: ObjectId,
-            count: Number
-        }]
+    _id: ObjectId,
+    date: new Date(),
+    supplier_id: ObjectId,
+    outlet_id: ObjectId,
+    items: [{
+        product_id: ObjectId,
+        count: Number
     }]
 }
