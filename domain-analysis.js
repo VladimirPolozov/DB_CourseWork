@@ -24,7 +24,7 @@
     name: String,
     products: [{
         product_id: ObjectId,
-        price: Number
+        price: Double
     }]
 }
 
@@ -32,14 +32,14 @@
 {
     _id: ObjectID,
     type: String, // for example: "general_store", "store", "kiosk", "stand" and e.t.c
-    size: Number,
-    rent_payment: Number,
-    utilities_payment: Number,
-    stands_count: Number,
+    size: Double,
+    rent_payment: Double,
+    utilities_payment: Double,
+    stands_count: Integer,
     sellers: [{
         seller_id: ObjectID,
         name: String,
-        salary: Number
+        salary: Double
     }],
     halls: [{ // for general stores and stores only
         hall_id: ObjectID
@@ -49,8 +49,8 @@
     }],
     inventory: [{
         product_id: ObjectID,
-        count: Number,
-        price: Number
+        count: Integer,
+        price: Double
     }]
 }
 
@@ -62,7 +62,7 @@
     items: [{
         product_id: ObjectId,
         supplier_id: ObjectId,
-        count: Number
+        count: Integer
     }]
 }
 
@@ -75,7 +75,7 @@
     seller_id: ObjectID,
     items: [{
         product_id: ObjectID,
-        count: Number
+        count: Integer
     }]
 }
 
@@ -87,6 +87,6 @@
     outlet_id: ObjectId,
     items: [{
         product_id: ObjectId,
-        count: Number
+        count: Integer
     }]
 }
