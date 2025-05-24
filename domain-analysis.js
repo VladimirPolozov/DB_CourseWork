@@ -35,6 +35,15 @@
         product_id: ObjectID,
         count: Number
     }]
+    requests: [{
+        request_id: ObjectID,
+        date: new Date(),
+        products: [{
+            product_id: ObjectId,
+            supplier_id: ObjectId,
+            count: Number
+        }]
+    }]
 }
 
 // collection: sales
@@ -53,5 +62,23 @@
 {
     _id: ObjectID,
     name: String,
-    suppliers: [{}]
+    suppliers: [{
+        supplier_id: ObjectID,
+        price: Number
+    }]
+}
+
+// collection: suppliers
+{
+    _id: ObjectID,
+    name: String,
+    orders: [{
+        order_id: ObjectId,
+        outlet_id: ObjectId,
+        date: new Date(),
+        products: [{
+            product_id: ObjectId,
+            count: Number
+        }]
+    }]
 }
