@@ -72,6 +72,7 @@
     date: new Date(),
     customer_id: ObjectID, // for general stores and stores only
     outlet_id: ObjectID,
+    seller_id: ObjectID,
     items: [{
         product_id: ObjectID,
         count: Number
