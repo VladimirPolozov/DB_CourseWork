@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактировать <%= collectionName %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"  rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <h2>Редактировать <%= collectionName %></h2>
+
+    <form method="POST" action="/collections/<%= collectionName %>/<%= item._id %>/?_method=PUT">
+      <% fields.forEach(function(field) { %>
+        <div class="mb-3">
+          <label for="<%= field.key %>" class="form-label">
+            <%= field.label.charAt(0).toUpperCase() + field.label.slice(1) %>
+          </label>
+          <input type="text" class="form-control" id="<%= field.key %>" name="<%= field.key %>" value="<%= item[field.key] || '' %>" required>
+        </div>
+      <% }) %>
+
+      <button type="submit" class="btn btn-primary">Сохранить</button>
+      <a href="/collections/<%= collectionName %>" class="btn btn-secondary">Отмена</a>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html>

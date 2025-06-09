@@ -4,60 +4,67 @@
   <meta charset="UTF-8">
   <title><%= collectionName %></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"  rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div class="container mt-4">
-    <h1 class="mb-4"><%= collectionName %></h1>
+    <h2><%= collectionName %></h2>
+    
+    <div class="d-flex gap-2">
+      <a href="/" class="btn btn-secondary mb-3">Назад к главной</a>
+      <a href="/collections/<%= collectionPath %>/new" class="btn btn-success mb-3">Добавить документ</a>
+    </div>
 
-    <!-- Кнопка добавления -->
-    <a href="/collections/<%= collectionPath %>/add" class="btn btn-success mb-3">Добавить запись</a>
-
-    <!-- Таблица записей -->
-    <table class="table table-striped table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <% fields.forEach(function(field) { %>
-            <th><%= field.label.charAt(0).toUpperCase() + field.label.slice(1) %></th>
+    <% if (items.length === 0) { %>
+      <p class="text-muted">Документов пока нет.</p>
+    <% } else { %>
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <% fields.forEach(function(field) { %>
+              <th>
+                <%= field.label.charAt(0).toUpperCase() + field.label.slice(1) %>
+              </th>
+            <% }) %>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% items.forEach(function(item) { %>
+            <tr>
+              <% fields.forEach(function(field) { %>
+                <td>
+                  <% if (field.type === 'arrayOfObjects' && item[field.key]) { %>
+                    <ul class="list-unstyled mb-0">
+                      <% item[field.key].forEach(function(obj) { %>
+                        <% if (typeof obj === 'object' && !Array.isArray(obj) && obj !== null) { %>
+                          <li>
+                            <% for (const prop in obj) { %>
+                              <strong><%= prop %>:</strong> <%= obj[prop] %><br>
+                            <% } %>
+                            <hr/>
+                          </li>
+                        <% } else { %>
+                          <li><%= obj %></li>
+                        <% } %>
+                      <% }) %>
+                    </ul>
+                  <% } else { %>
+                    <%= item[field.key] || '' %>
+                  <% } %>
+                </td>
+              <% }) %>
+              <td>
+                <a href="/collections/<%= collectionPath %>/<%= item._id %>/edit" class="btn btn-sm btn-primary me-1">Изменить</a>
+                <form action="/collections/<%= collectionPath %>/<%= item._id %>/?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
+                </form>
+              </td>
+            </tr>
           <% }) %>
-          <th>Действия</th>
-        </tr>
-      </thead>
-      <tbody>
-  <% items.forEach(function(item) { %>
-    <tr>
-      <% fields.forEach(function(field) { %>
-        <%
-          const value = item[field.key];
-          let displayValue = '-';
-
-          if (value !== undefined && value !== null) {
-            if (value instanceof Date) {
-              displayValue = value.toLocaleString();
-            } 
-            else if (Array.isArray(value)) {
-              displayValue = '<ul class="mb-0 ps-3">' + 
-                value.map(v => `<li>${typeof v === 'object' && v !== null ? JSON.stringify(v) : v}</li>`).join('') + 
-                '</ul>';
-            }
-            else if (typeof value === 'object') {
-              displayValue = JSON.stringify(value);
-            }
-            else {
-              displayValue = value;
-            }
-        %>
-        <td><%- displayValue %></td>
-      <% }) %>
-      <td>
-        <a href="/collections/<%= collectionPath %>/<%= item._id %>/edit" class="btn btn-primary btn-sm me-1">Изменить</a>
-        <form action="/collections/<%= collectionPath %>/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;">
-          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены?')">Удалить</button>
-        </form>
-      </td>
-    </tr>
-  <% }) %>
-</tbody>
-    </table>
+        </tbody>
+      </table>
+    <% } %>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
